@@ -14,8 +14,9 @@
 //# pragma comment (lib ,"glut32.lib") //- НА ЭТУ СТРОКУ РУГАЕТСЯ
 # pragma comment (lib ,"freeglut.lib")
 
-//Глобальные статические переменные — хранят текущий размер экрана
-static int w = 0, h = 0;
+static int task; // номер задания
+
+static int w = 0, h = 0; //Глобальные статические переменные — хранят текущий размер экрана
 
 double rotate_x = 0;
 double rotate_y = 0;
@@ -26,176 +27,113 @@ float Angle = 0;
 //Функция вызываемая перед вхождением в главный цикл
 void Init(void)
 {
-	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-}
-
-//Функция вызываемая перед вхождением в главный цикл
-void Init2(void)
-{
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-}
-
-//Функция вызываемая перед вхождением в главный цикл
-void Init3(void)
-{
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	//Изменяем размер точки на значение 10 пикселей
-	glPointSize(10.0f);
+	if (task == 1)
+		glClearColor(0.0f, 0.0f, 1.0f, 1.0f); // фон в синий цвет
+	else if (task == 7)
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // фон в чёрный цвет
+		glPointSize(10.0f); // Изменяем размер точки на значение 10 пикселей
+	}
+	else
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // фон в чёрный цвет
+	}
 }
 
 //Функция вызываемая каждый кадр — для его отрисовки, вычислений и т. д.
 void Update(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glutSwapBuffers();
-}
+	glClear(GL_COLOR_BUFFER_BIT); // Очистка буфера цвета
+	GLfloat BlueCol[3] = { 0 , 0 , 1 }; // используется только для 9 задания (эта штуковина не хочет в метке работать)
+	if (task > 4)
+	{
+		glMatrixMode(GL_MODELVIEW); // Текущая — матрица видового преобразования
+		glLoadIdentity(); // Загружаем единичную матрицу
+	}
+	switch (task)
+	{
+	case 5:
+		Angle += 0.05f; //Увеличиваем угол поворота
+		gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f); // Задание позиции камеры, точки наблюдения и вектор вверх
+		glRotatef(Angle, 0.0f, 1.0f, 0.0f); // Применение матрицы поворота к текущей матрице
+		glutWireSphere(50.0f, 10, 10); 	// Рисование сферы радиусом 50 ед, размером 10 x 10 полигонов
+		//Сбросить все данные на обработку в конвейер преобразования
+		// OpenGL без ожидания завершения предыдущих инструкций
+		glFlush(); // Результат команд, которые мы послали раньше, показывает пользователю (сбрасывает все данные на обработку в конвейер преобразований
+		// OpenGL без ожидания завершения предыдущих инструкций
+		break;
+	case 6:
 
-//Функция вызываемая каждый кадр — для его отрисовки, вычислений и т. д.
-void Update2(void)
-{
-	//Текущая — матрица видового преобразования
-	glMatrixMode(GL_MODELVIEW);
-	Angle += 0.05f; //Увеличиваем угол поворота
-	glClear(GL_COLOR_BUFFER_BIT); //Очистим буфер цвета
-	glLoadIdentity(); //Загрузим едматрицу. вида
-	//Зададим позицию камеры, точку наблюд. и вектор вверх
-	gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	//Применим матрицу поворота на текущую матрицу
-	glRotatef(Angle, 0.0f, 1.0f, 0.0f);
-	//Отрисуем сферу радиусом 50 ед, размером 10 x10 полигонов
-	glutWireSphere(50.0f, 10, 10);
-	//Сбросить все данные на обработку в конвейер преобразования
-	// OpenGL без ожидания завершения предыдущих инструкций
-	glFlush();
-	glutSwapBuffers();
-}
+		Angle += 0.05f;
+		gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(Angle, 0.0f, 1.0f, 0.0f);
+		glutWireTeapot(50.0f); // Рисуем чайник размером 50 единиц
+		glFlush();
+		break;
+	case 7:
+		Angle += 0.005f;
+		gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(Angle, 0.0f, 1.0f, 0.0f);
 
-//Функция вызываемая каждый кадр — для его отрисовки, вычислений и т. д.
-void Update3(void)
-{
-	//Текущая — матрица видового преобразования
-	glMatrixMode(GL_MODELVIEW);
-	Angle += 0.05f; //Увеличиваем угол поворота
-	glClear(GL_COLOR_BUFFER_BIT); //Очистим буфер цвета
-	glLoadIdentity(); //Загрузим едматрицу. вида
-	//Зададим позицию камеры, точку наблюд. и вектор вверх
-	gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	//Применим матрицу поворота на текущую матрицу
-	glRotatef(Angle, 0.0f, 1.0f, 0.0f);
-	//Отрисуем сферу радиусом 50 ед, размером 10 x10 полигонов
-	glutWireTeapot(50.0f);
-	//Сбросить все данные на обработку в конвейер преобразования
-	// OpenGL без ожидания завершения предыдущих инструкций
-	glFlush();
-	glutSwapBuffers();
-}
+		// Отрисовка точек
+		glBegin(GL_POINTS);
+		glVertex3f(-50.0f, -50.0f, -50.0f);
+		glVertex3f(-50.0f, -50.0f, 50.0f);
+		glVertex3f(-50.0f, 50.0f, -50.0f);
+		glVertex3f(-50.0f, 50.0f, 50.0f);
+		glVertex3f(50.0f, -50.0f, -50.0f);
+		glVertex3f(50.0f, -50.0f, 50.0f);
+		glVertex3f(50.0f, 50.0f, -50.0f);
+		glVertex3f(50.0f, 50.0f, 50.0f);
+		glEnd();
 
-//Функция вызываемая каждый кадр — для его отрисовки, вычислений и т. д.
-void Update4(void)
-{
-	//Текущая — матрица видового преобразования
-	glMatrixMode(GL_MODELVIEW);
-	Angle += 0.005f; //Увеличиваем угол поворота
-	glClear(GL_COLOR_BUFFER_BIT); //Очистим буфер цвета
-	glLoadIdentity(); //Загрузим едматрицу. вида
-	//Зададим позицию камеры, точку наблюд. и вектор вверх
-	gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	//Применим матрицу поворота на текущую матрицу
-	glRotatef(Angle, 0.0f, 1.0f, 0.0f);
-	//Отрисуем сферу радиусом 50 ед, размером 10 x10 полигонов
-	glBegin(GL_POINTS);
-	glVertex3f(-50.0f, -50.0f, -50.0f);
-	glVertex3f(-50.0f, -50.0f, 50.0f);
-	glVertex3f(-50.0f, 50.0f, -50.0f);
-	glVertex3f(-50.0f, 50.0f, 50.0f);
-	glVertex3f(50.0f, -50.0f, -50.0f);
-	glVertex3f(50.0f, -50.0f, 50.0f);
-	glVertex3f(50.0f, 50.0f, -50.0f);
-	glVertex3f(50.0f, 50.0f, 50.0f);
-	glEnd();
+		glFlush();
+		break;
+	case 8:
+		Angle += 0.005f;
+		gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(Angle, 0.0f, 1.0f, 0.0f);
 
-	//Сбросить все данные на обработку в конвейер преобразования
-	// OpenGL без ожидания завершения предыдущих инструкций
-	glFlush();
-	glutSwapBuffers();
-}
+		// Рисуем два треугольника
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 0.0f, 0.0f); //Текущим - делаем красный цвет по (RGB)
+		//Первый красный треугольник
+		glVertex3f(-75.0f, 0.0f, -50.0f);
+		glVertex3f(-75.0f, 0.0f, 50.0f);
+		glVertex3f(75.0f, 0.0f, 50.0f);
 
-//Функция вызываемая каждый кадр — для его отрисовки, вычислений и т. д.
-void Update5(void)
-{
-	//Текущая — матрица видового преобразования
-	glMatrixMode(GL_MODELVIEW);
-	Angle += 0.005f; //Увеличиваем угол поворота
-	glClear(GL_COLOR_BUFFER_BIT); //Очистим буфер цвета
-	glLoadIdentity(); //Загрузим едматрицу. вида
-	//Зададим позицию камеры, точку наблюд. и вектор вверх
-	gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	//Применим матрицу поворота на текущую матрицу
-	glRotatef(Angle, 0.0f, 1.0f, 0.0f);
+		glColor3f(0.0f, 0.0f, 1.0f); //Текущим - делаем синий цвет по( RGB)
+		//Рисуем второй синий треугольник
+		glVertex3f(-75.0f, 0.0f, -50.0f);
+		glVertex3f(75.0f, 0.0f, -50.0f);
+		glVertex3f(75.0f, 0.0f, 50.0f);
+		glEnd();
 
-	glBegin(GL_TRIANGLES);
-	//Текущим - делаем красный цвет по (RGB)
-	glColor3f(1.0f, 0.0f, 0.0f);
-	//Первый красный треугольник
-	glVertex3f(-75.0f, 0.0f, -50.0f);
-	glVertex3f(-75.0f, 0.0f, 50.0f);
-	glVertex3f(75.0f, 0.0f, 50.0f);
-	//Текущим - делаем синий цвет по( RGB)
-	glColor3f(0.0f, 0.0f, 1.0f);
-	//Рисуем второй синий треугольник
-	glVertex3f(-75.0f, 0.0f, -50.0f);
-	glVertex3f(75.0f, 0.0f, -50.0f);
-	glVertex3f(75.0f, 0.0f, 50.0f);
-	glEnd();
+		glFlush();
+		break;
+	case 9:
+		Angle += 0.05f;
+		gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(Angle, 0.0f, 1.0f, 0.0f);
 
-	//Сбросить все данные на обработку в конвейер преобразования
-	// OpenGL без ожидания завершения предыдущих инструкций
-	glFlush();
-	glutSwapBuffers();
-}
+		// Рисуем градиентный треугольник
+		//GLfloat BlueCol[3] = { 0 , 0 , 1 };
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0, 0.0, 0.0); /* красный */
+		glVertex3f(0.0, 0.0, 0.0);
+		glColor3ub(0, 255, 0); /* зеленый */
+		glVertex3f(75.0, 0.0, 0.0);
+		glColor3fv(BlueCol); /* синий */
+		glVertex3f(75.0, 75.0, 0.0);
+		glEnd();
 
-//Функция вызываемая каждый кадр — для его отрисовки, вычислений и т. д.
-void Update6(void)
-{
-	//Текущая — матрица видового преобразования
-	glMatrixMode(GL_MODELVIEW);
-	Angle += 0.05f; //Увеличиваем угол поворота
-	glClear(GL_COLOR_BUFFER_BIT); //Очистим буфер цвета
-	glLoadIdentity(); //Загрузим едматрицу. вида
-	//Зададим позицию камеры, точку наблюд. и вектор вверх
-	gluLookAt(100.0f, 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	//Применим матрицу поворота на текущую матрицу
-	glRotatef(Angle, 0.0f, 1.0f, 0.0f);
-
-	GLfloat BlueCol[3] = { 0 , 0 , 1 };
-	glBegin(GL_TRIANGLES);
-	glColor3f(1.0, 0.0, 0.0); /* красный */
-	glVertex3f(0.0, 0.0, 0.0);
-	glColor3ub(0, 255, 0); /* зеленый */
-	glVertex3f(75.0, 0.0, 0.0);
-	glColor3fv(BlueCol); /* синий */
-	glVertex3f(75.0, 75.0, 0.0);
-	glEnd();
-
-	//Сбросить все данные на обработку в конвейер преобразования
-	// OpenGL без ожидания завершения предыдущих инструкций
-	glFlush();
-	glutSwapBuffers();
-}
-
-//Функця вызываемая при изменении размеров окна
-void Reshape2(int width, int height)
-{
-	w = width;
-	h = height;
-	// область для отрисовки — в данном случае: всё окно
-	glViewport(0, 0, w, h);
-	// Текущая матрица - матрица проективного преобразования
-	glMatrixMode(GL_PROJECTION);
-	// Сделаем матрицу проективного преобразования единичной
-	glLoadIdentity();
-	// Применим матрицу перспективного преобразования исходя из заданного угла обзора, отношения ширины к высоте и расстояния ближней и дальней отсекающих плоскостей
-	gluPerspective(65.0f, w / h, 1.0f, 1000.0f);
+		glFlush();
+		break;
+	default:
+		break;
+	}
+	glutSwapBuffers(); // Так как включена двойная буферизация, то все рисуется на скрытом от пользователя буфере, а затем происходит смена буферов. 
+	// Делается это для получения плавной анимации и для того, чтобы не было эффекта мерцания экрана.
 }
 
 //Функця вызываемая при изменении размеров окна
@@ -203,6 +141,15 @@ void Reshape(int width, int height)
 {
 	w = width;
 	h = height;
+	if (task > 4)
+	{
+		glViewport(0, 0, w, h); // область для отрисовки — в данном случае: всё окно
+		glMatrixMode(GL_PROJECTION); // Текущая матрица - матрица проективного преобразования
+		glLoadIdentity(); // Сделаем матрицу проективного преобразования единичной
+		gluPerspective(65.0f, w / h, 1.0f, 1000.0f); // Применим матрицу перспективного преобразования 
+													 // исходя из заданного угла обзора, отношения ширины к высоте и 
+													 //расстояния ближней и дальней отсекающих плоскостей
+	}
 }
 
 void renderRectangle()
@@ -210,7 +157,7 @@ void renderRectangle()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glRotatef(rotate_z, 0.0, 0.0, 1.0);
-	glBegin(GL_QUADS);
+	glBegin(GL_QUADS); // рисование квадрата
 	glColor3f(1.0, 0.0, 0.0); glVertex2f(-0.5f, -0.5f);
 	glColor3f(0.0, 1.0, 0.0); glVertex2f(-0.5f, 0.5f);
 	glColor3f(0.0, 0.0, 1.0); glVertex2f(0.5f, 0.5f);
@@ -231,7 +178,7 @@ void renderWireCube()
 	glutSwapBuffers();
 }
 
-void renderWireCube2()
+void renderSolidCube()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -271,237 +218,73 @@ int main(int argc, char* argv[])
 	std::cout << "8 — два треугольника разного цвета (стр. 65 в презентации)" << std::endl;
 	std::cout << "9 — вращение в 3D треугольника (с градиентной закраской) вокруг осей координат (стр. 70 в презентации)" << std::endl;
 
-	int number;
-	std::cin >> number;
-	switch (number)
+	std::cin >> task;
+
+	glutInit(&argc, argv); 	// Инициализация glut
+	glutInitWindowPosition(100, 100); 	// Начальное положение окна
+	glutInitWindowSize(600, 600); // Начальные размеры окна
+
+	if (task == 1)
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); // Установка параметров окна — двойная буфферизация и поддержка цвета RGBA
+	else glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA); // то же, что и в предыдущем, но + буфферизация глубины
+
+	glutCreateWindow("OpenGL");  // Создаёт окно с заголовком OpenGL
+
+	switch (task)
 	{
 	case 1:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(800, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL");
-
-		//Укажем glut функцию, которая будет вызываться каждый кадр
-		glutIdleFunc(Update);
-
-		//Укажем glut функцию, которая будет рисовать каждый кадр
-		glutDisplayFunc(Update);
-
-		//Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
-		glutReshapeFunc(Reshape);
+		glutIdleFunc(Update); // Укажем glut функцию, которая будет вызываться каждый кадр
+		glutDisplayFunc(Update); // Укажем glut функцию, которая будет рисовать каждый кадр
+		glutReshapeFunc(Reshape); // Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
 		Init();
-
 		break;
 	case 2:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(600, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL_HelloWorld");
-
 		glutDisplayFunc(renderRectangle);
-
 		glutSpecialFunc(specialKeys);
 		glutReshapeFunc(Reshape);
-
+		Init();
 		break;
 	case 3:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(600, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL_HelloWorld");
-
 		glutDisplayFunc(renderWireCube);
-
 		glutSpecialFunc(specialKeys);
 		glutReshapeFunc(Reshape);
-
+		Init();
 		break;
 	case 4:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(600, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL_HelloWorld");
-
-		glutDisplayFunc(renderWireCube2);
-
+		glutDisplayFunc(renderSolidCube);
 		glutSpecialFunc(specialKeys);
 		glutReshapeFunc(Reshape);
-
+		Init();
 		break;
 	case 5:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(800, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL");
-
-		//Укажем glut функцию, которая будет вызываться каждый кадр
-		glutIdleFunc(Update2);
-
-		//Укажем glut функцию, которая будет рисовать каждый кадр
-		glutDisplayFunc(Update2);
-
-		//Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
-		glutReshapeFunc(Reshape2);
-		Init2();
-
+		glutIdleFunc(Update);
+		glutDisplayFunc(Update);
+		glutReshapeFunc(Reshape);
+		Init();
 		break;
 	case 6:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(800, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL");
-
-		//Укажем glut функцию, которая будет вызываться каждый кадр
-		glutIdleFunc(Update3);
-
-		//Укажем glut функцию, которая будет рисовать каждый кадр
-		glutDisplayFunc(Update3);
-
-		//Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
-		glutReshapeFunc(Reshape2);
-		Init2();
-
+		glutIdleFunc(Update);
+		glutDisplayFunc(Update);
+		glutReshapeFunc(Reshape);
+		Init();
 		break;
 	case 7:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(800, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL");
-
-		//Укажем glut функцию, которая будет вызываться каждый кадр
-		glutIdleFunc(Update4);
-
-		//Укажем glut функцию, которая будет рисовать каждый кадр
-		glutDisplayFunc(Update4);
-
-		//Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
-		glutReshapeFunc(Reshape2);
-		Init3();
-
+		glutIdleFunc(Update);
+		glutDisplayFunc(Update);
+		glutReshapeFunc(Reshape);
+		Init();
 		break;
 	case 8:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(800, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL");
-
-		//Укажем glut функцию, которая будет вызываться каждый кадр
-		glutIdleFunc(Update5);
-
-		//Укажем glut функцию, которая будет рисовать каждый кадр
-		glutDisplayFunc(Update5);
-
-		//Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
-		glutReshapeFunc(Reshape2);
-		Init3();
-
+		glutIdleFunc(Update);
+		glutDisplayFunc(Update);
+		glutReshapeFunc(Reshape);
+		Init();
 		break;
 	case 9:
-		//Инициализировать сам glut
-		glutInit(&argc, argv);
-
-		//Установить начальное положение окна
-		glutInitWindowPosition(100, 100);
-
-		//Установить начальные размеры окна
-		glutInitWindowSize(800, 600);
-
-		//Установить параметры окна — двойная буфферизация и поддержка цвета RGBA
-		glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-		//Создать окно с заголовком OpenGL
-		glutCreateWindow("OpenGL");
-
-		//Укажем glut функцию, которая будет вызываться каждый кадр
-		glutIdleFunc(Update6);
-
-		//Укажем glut функцию, которая будет рисовать каждый кадр
-		glutDisplayFunc(Update6);
-
-		//Укажем glut функцию, которая будет вызываться при изменении размера окна приложения
-		glutReshapeFunc(Reshape2);
-		Init3();
-
+		glutIdleFunc(Update);
+		glutDisplayFunc(Update);
+		glutReshapeFunc(Reshape);
+		Init();
 		break;
 	default:
 		break;

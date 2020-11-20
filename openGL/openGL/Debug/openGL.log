@@ -1,9 +1,1 @@
-﻿  main.cpp
-C:\Users\Irina\openGL\openGL\main.cpp(212,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-C:\Users\Irina\openGL\openGL\main.cpp(226,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-C:\Users\Irina\openGL\openGL\main.cpp(227,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-C:\Users\Irina\openGL\openGL\main.cpp(228,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-C:\Users\Irina\openGL\openGL\main.cpp(238,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-C:\Users\Irina\openGL\openGL\main.cpp(239,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-C:\Users\Irina\openGL\openGL\main.cpp(240,12): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
-  openGL.vcxproj -> C:\Users\Irina\openGL\Debug\openGL.exe
+﻿  openGL.vcxproj -> C:\Users\Irina\OpenGL\openGL\Debug\openGL.exe
